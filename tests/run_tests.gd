@@ -12,6 +12,8 @@ const CASES := [
 	preload("res://tests/cases/case_pawn.gd"),
 	preload("res://tests/cases/case_walls.gd"),
 	preload("res://tests/cases/case_geometry.gd"),
+	preload("res://tests/cases/case_queries.gd"),
+	preload("res://tests/cases/case_ai.gd"),
 ]
 
 func _initialize() -> void:

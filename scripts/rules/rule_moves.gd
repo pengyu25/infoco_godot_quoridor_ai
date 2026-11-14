@@ -79,6 +79,10 @@ static func is_legal(state, move: Dictionary) -> bool:
 static func is_wall_legal(state, kind: String, x: int, y: int, player: int) -> bool:
 	return RW.is_wall_legal(state, kind, x, y, player)
 
+# 能挡住相邻两格之间这一步的墙位（只算几何，不查合法性）
+static func walls_blocking_step(from: Vector2i, to: Vector2i) -> Array:
+	return RW.walls_blocking_step(from, to)
+
 # 执行着法：返回新局面（不改传入的 state）
 static func apply(state, move: Dictionary) -> RefCounted:
 	var s = state.clone()

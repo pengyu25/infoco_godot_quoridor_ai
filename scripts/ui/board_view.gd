@@ -32,6 +32,14 @@ var wall_mode: bool = false
 
 var _preview: Dictionary = {}
 
+# main.gd 每次局面或选中状态变化时调用
+func show_state(new_state, new_selected: Vector2i, targets: Array, in_wall_mode: bool) -> void:
+	state = new_state
+	selected = new_selected
+	legal_targets = targets
+	wall_mode = in_wall_mode
+	queue_redraw()
+
 func _draw() -> void:
 	# 页面背景（含站点那种顶部绿色微光，已烘进图里）
 	draw_texture_rect(TEX_BG, Rect2(0, 0, 960, 1080), false)

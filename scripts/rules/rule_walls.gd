@@ -54,6 +54,31 @@ static func is_wall_legal(state, kind: String, x: int, y: int, player: int) -> b
 	put_wall(probe, kind, x, y, player)
 	return RP.shortest_path_len(probe, 0) >= 0 and RP.shortest_path_len(probe, 1) >= 0
 
+# 能挡住「from → to 这一步」的墙位：只算几何，不查合法性（重叠 / 交叉 / 封死请再用 is_wall_legal）。
+# from、to 必须是棋盘内相邻两格，否则返回 []。贴边时只有 1 个，其余 2 个。
+static func walls_blocking_step(from: Vector2i, to: Vector2i) -> Array:
+	var out: Array = []
+	if not RP.is_in_board(from) or not RP.is_in_board(to):
+		return out
+	var dx: int = to.x - from.x
+	var dy: int = to.y - from.y
+	if abs(dx) + abs(dy) != 1:
+		return out
+
+	if dy != 0:
+		# 上下走一步要穿过一条横线：起点列为 x-1 或 x 的横墙都会覆盖这一列
+		var line_y: int = max(from.y, to.y)
+		for x0 in [from.x - 1, from.x]:
+			if x0 >= 0 and x0 <= SIZE - 2:
+				out.append({"type": "wall_h", "x": x0, "y": line_y})
+	else:
+		# 左右走一步要穿过一条竖线：起点行为 y-1 或 y 的竖墙都会覆盖这一行
+		var line_x: int = max(from.x, to.x)
+		for y0 in [from.y - 1, from.y]:
+			if y0 >= 0 and y0 <= SIZE - 2:
+				out.append({"type": "wall_v", "x": line_x, "y": y0})
+	return out
+
 # 把墙落到 state 上并扣墙数（直接改传入的 state，调用方负责先 clone）
 static func put_wall(state, kind: String, x: int, y: int, player: int) -> void:
 	if kind == "wall_h":
