@@ -5,6 +5,10 @@
 [ext_resource type="Script" uid="uid://dycsyvp4afmng" path="res://scripts/ui/hud.gd" id="3_hud"]
 [ext_resource type="Script" path="res://scripts/ui/menu.gd" id="4_menu"]
 [ext_resource type="Script" path="res://scripts/computer_turn.gd" id="5_computer"]
+[ext_resource type="Script" path="res://scripts/human_turn.gd" id="6_human"]
+[ext_resource type="Script" path="res://scripts/llm_turn.gd" id="7_llm"]
+[ext_resource type="Script" path="res://scripts/ui/chat_panel.gd" id="8_chat"]
+[ext_resource type="Script" path="res://scripts/ui/settings_panel.gd" id="9_settings"]
 
 [node name="Main" type="Node2D" unique_id=548580462]
 script = ExtResource("1_main")
@@ -12,8 +16,14 @@ script = ExtResource("1_main")
 [node name="Board" type="Node2D" parent="." unique_id=1958234697]
 script = ExtResource("2_board")
 
+[node name="HumanTurn" type="Node" parent="."]
+script = ExtResource("6_human")
+
 [node name="ComputerTurn" type="Node" parent="."]
 script = ExtResource("5_computer")
+
+[node name="LlmTurn" type="Node" parent="."]
+script = ExtResource("7_llm")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=880438001]
 
@@ -26,6 +36,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_hud")
 
+[node name="ChatPanel" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_chat")
+
 [node name="Menu" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 15
@@ -34,3 +54,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_menu")
+
+[node name="SettingsPanel" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_settings")

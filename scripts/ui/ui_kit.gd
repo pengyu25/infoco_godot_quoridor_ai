@@ -24,6 +24,21 @@ static func make_theme() -> Theme:
 		th.default_font = f
 	return th
 
+# 弹层底板：整屏压暗 + 中间一块面板（菜单、设置页共用）。返回面板
+static func make_overlay(parent: Control, panel_rect: Rect2, dim_alpha: float) -> Panel:
+	var dim := ColorRect.new()
+	dim.color = Color(INK.r, INK.g, INK.b, dim_alpha)
+	dim.size = Vector2(960, 1080)
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(dim)
+	var panel := Panel.new()
+	panel.position = panel_rect.position
+	panel.size = panel_rect.size
+	panel.add_theme_stylebox_override("panel", make_box(PANEL, 16))
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(panel)
+	return panel
+
 static func make_label(parent: Control, rect: Rect2, font_size: int, color: Color, align: int) -> Label:
 	var l := Label.new()
 	l.position = rect.position
@@ -45,6 +60,46 @@ static func make_box(bg: Color, radius: int) -> StyleBoxFlat:
 	box.content_margin_left = 14
 	box.content_margin_right = 14
 	return box
+
+static func make_line_edit(parent: Control, rect: Rect2, placeholder: String, font_size: int = 20) -> LineEdit:
+	var e := LineEdit.new()
+	e.position = rect.position
+	e.size = rect.size
+	e.placeholder_text = placeholder
+	e.add_theme_font_size_override("font_size", font_size)
+	e.add_theme_color_override("font_color", TEXT)
+	e.add_theme_color_override("font_placeholder_color", MUTED)
+	e.add_theme_stylebox_override("normal", make_box(PANEL2, 8))
+	e.add_theme_stylebox_override("focus", make_box(PRESSED, 8))
+	parent.add_child(e)
+	return e
+
+static func make_check(parent: Control, rect: Rect2, text: String, font_size: int = 18) -> CheckBox:
+	var c := CheckBox.new()
+	c.position = rect.position
+	c.size = rect.size
+	c.text = text
+	c.focus_mode = Control.FOCUS_NONE
+	c.add_theme_font_size_override("font_size", font_size)
+	c.add_theme_color_override("font_color", TEXT)
+	# 引擎默认的空心框在深色底上几乎看不见，换成自己画的高对比方框
+	c.add_theme_icon_override("unchecked", _box_icon(false))
+	c.add_theme_icon_override("checked", _box_icon(true))
+	parent.add_child(c)
+	return c
+
+# 20×20 的勾选框图标：浅色描边；勾选时中间填站点绿
+static func _box_icon(checked: bool) -> ImageTexture:
+	var img := Image.create(20, 20, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	var edge := Color(TEXT.r, TEXT.g, TEXT.b, 0.75)
+	for i in range(1, 19):
+		for w in [1, 2, 17, 18]:
+			img.set_pixel(i, w, edge)
+			img.set_pixel(w, i, edge)
+	if checked:
+		img.fill_rect(Rect2i(5, 5, 10, 10), ACID)
+	return ImageTexture.create_from_image(img)
 
 static func make_button(parent: Control, rect: Rect2, text: String, font_size: int) -> Button:
 	var b := Button.new()

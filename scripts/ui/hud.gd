@@ -8,7 +8,11 @@ signal menu_pressed()
 
 const KIT = preload("res://scripts/ui/ui_kit.gd")
 
+const HINT_Y_ALONE := 60.0                # 没有台词时提示语的位置
+const HINT_Y_WITH_SPEECH := 77.0          # 有台词时提示语往下让一行
+
 var turn_label: Label
+var speech_label: Label                   # 大模型最新一句台词（只在大模型对战里有内容）
 var hint_label: Label
 var wall_p0_label: Label
 var wall_p1_label: Label
@@ -37,8 +41,10 @@ func _ready() -> void:
 	top_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(top_line)
 
-	turn_label = KIT.make_label(self, Rect2(0, 16, 960, 52), 32, KIT.TEXT, HORIZONTAL_ALIGNMENT_CENTER)
-	hint_label = KIT.make_label(self, Rect2(0, 70, 960, 28), 18, KIT.MUTED, HORIZONTAL_ALIGNMENT_CENTER)
+	turn_label = KIT.make_label(self, Rect2(0, 8, 960, 44), 30, KIT.TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+	speech_label = KIT.make_label(self, Rect2(30, 50, 900, 26), 19, KIT.P1, HORIZONTAL_ALIGNMENT_CENTER)
+	speech_label.clip_text = true
+	hint_label = KIT.make_label(self, Rect2(0, HINT_Y_ALONE, 960, 26), 18, KIT.MUTED, HORIZONTAL_ALIGNMENT_CENTER)
 	wall_p0_label = KIT.make_label(self, Rect2(40, 976, 200, 40), 22, KIT.P0, HORIZONTAL_ALIGNMENT_LEFT)
 	wall_p1_label = KIT.make_label(self, Rect2(720, 976, 200, 40), 22, KIT.P1, HORIZONTAL_ALIGNMENT_RIGHT)
 
@@ -75,6 +81,11 @@ func set_wall_mode(on: bool) -> void:
 
 func set_hint(text: String) -> void:
 	hint_label.text = text
+
+# 大模型的台词气泡；传 "" 收起
+func set_speech(text: String) -> void:
+	speech_label.text = text
+	hint_label.position.y = HINT_Y_ALONE if text == "" else HINT_Y_WITH_SPEECH
 
 # ---- 内部 ----
 
