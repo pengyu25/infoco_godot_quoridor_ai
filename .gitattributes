@@ -1,0 +1,2 @@
+# 文本文件在仓库里统一存 LF（Godot 新建项目的默认做法），换电脑 clone 也不会出现整文件换行符差异
+* text=auto eol=lf

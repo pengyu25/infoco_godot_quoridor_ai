@@ -1,0 +1,11 @@
+Zpix（最像素字体）
+==================
+
+字体文件：zpix.ttf
+作者：SolidZORO
+来源：https://github.com/SolidZORO/zpix-pixel-font
+协议：MIT（可自由使用 / 修改 / 商用，需保留版权声明）
+
+用途：本项目所有中文界面文字的唯一依赖（Godot 内置字体无中文字形）。
+
+注意：Godot 4.7 无法正确解析 OTF（CFF 轮廓）中文字体，必须使用 TTF —— 换字体时请遵守这一点。

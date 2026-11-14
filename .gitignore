@@ -1,0 +1,20 @@
+# Godot 4 缓存（导入 / UID 缓存）
+.godot/
+
+# 构建产物
+/build/
+
+# 导出物（Windows / Web）
+*.exe
+*.pck
+*.zip
+*.wasm
+*.wasm.gz
+Quoridor.*
+
+# 临时 / 诊断脚本（约定：下划线开头）
+_*.gd
+
+# 截图目检产物（连同编辑器给它生成的导入配置）
+tmp_shot.png
+tmp_shot.png.import
